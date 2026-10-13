@@ -17,7 +17,7 @@
   },
   "scripts": {
     "test": "wdio run ./wdio.conf.ts",
-    "wdio": "wdio run ./wdio.conf.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "emulator": "\"$ANDROID_HOME/emulator/emulator\" -avd Pixel"
   }
 }
