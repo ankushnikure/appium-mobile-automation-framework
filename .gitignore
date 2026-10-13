@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# App builds
+*.apk
+*.ipa
+
+# Logs and generated reports
+*.log
+allure-results/
+allure-report/
+screenshots/
+videos/
+
+# macOS files
+.DS_Store
