@@ -1,20 +1,29 @@
 import { $ } from '@wdio/globals';
 
 export class NavigationMenu {
-
-    get menuButton() {
+    // Locators
+    private get menuButton() {
         return $('~View menu');
     }
 
-    get loginOption() {
+    private get loginOption() {
         return $('~Login Menu Item');
     }
 
+    public get logoutOption() {
+        return $('~Logout Menu Item');
+    }
+
+    // Actions
     async openMenu(): Promise<void> {
         await this.menuButton.click();
     }
 
     async selectLogin(): Promise<void> {
         await this.loginOption.click();
+    }
+
+    async logout(): Promise<void> {
+        await this.logoutOption.click();
     }
 }
