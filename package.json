@@ -12,6 +12,7 @@
     "@wdio/spec-reporter": "^10.0.1",
     "appium": "^3.8.0",
     "appium-uiautomator2-driver": "^8.7.0",
+    "dotenv": "^18.0.8",
     "expect-webdriverio": "^8.0.0",
     "typescript": "^7.0.2"
   },

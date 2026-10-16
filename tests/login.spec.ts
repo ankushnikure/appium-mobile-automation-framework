@@ -1,7 +1,9 @@
 import { NavigationMenu } from '@components/navigation-menu.component';
 import { LoginScreen } from '@screens/login.screen';
 import { browser, expect } from '@wdio/globals';
+import { env } from '@utils/env';
 import loginData from '@test-data/login.data.json'
+
 
 const appId = 'com.saucelabs.mydemoapp.android';
 
@@ -31,7 +33,7 @@ describe('Login Tests', () => {
     it('Login with valid credentials', async () => {
 
         // Login with valid credentials
-        await loginScreen.login('bod@example.com', '10203040');
+        await loginScreen.login(env.username, env.password);
 
         // Validate the logout option after login
         await navigationMenu.openMenu();

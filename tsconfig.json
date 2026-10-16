@@ -18,6 +18,7 @@
             "@components/*": ["./src/components/*"],
             "@screens/*": ["./src/screens/*"],
             "@test-data/*": ["./src/test-data/*"],
+            "@utils/*": ["./src/utils/*"],
         },
         "skipLibCheck": true,
         "noEmit": true,
