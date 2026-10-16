@@ -1,0 +1,10 @@
+{
+    "lockedOutUser": {
+        "username": "alice@example.com",
+        "password": "10203040"
+    },
+    "emptyCredentials": {
+        "username": "",
+        "password": ""
+    }
+}

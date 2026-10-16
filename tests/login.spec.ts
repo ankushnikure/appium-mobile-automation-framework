@@ -1,6 +1,7 @@
 import { NavigationMenu } from '@components/navigation-menu.component';
 import { LoginScreen } from '@screens/login.screen';
 import { browser, expect } from '@wdio/globals';
+import loginData from '@test-data/login.data.json'
 
 const appId = 'com.saucelabs.mydemoapp.android';
 
@@ -41,7 +42,10 @@ describe('Login Tests', () => {
     it('Login with a locked-out user', async () => {
 
         // Login with a locked-out user
-        await loginScreen.login('alice@example.com', '10203040');
+        await loginScreen.login(
+            loginData.lockedOutUser.username,
+            loginData.lockedOutUser.password
+        );
 
         // Validate the error message
         await expect(loginScreen.passwordErrorMessage).toBeDisplayed();

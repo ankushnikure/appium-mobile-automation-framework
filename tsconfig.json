@@ -17,6 +17,7 @@
         "paths": {
             "@components/*": ["./src/components/*"],
             "@screens/*": ["./src/screens/*"],
+            "@test-data/*": ["./src/test-data/*"],
         },
         "skipLibCheck": true,
         "noEmit": true,
