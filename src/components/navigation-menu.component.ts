@@ -6,7 +6,7 @@ export class NavigationMenu {
         return $('~View menu');
     }
 
-    private get loginOption() {
+    public get loginOption() {
         return $('~Login Menu Item');
     }
 
@@ -23,7 +23,7 @@ export class NavigationMenu {
         await this.loginOption.click();
     }
 
-    async logout(): Promise<void> {
+    async selectLogout(): Promise<void> {
         await this.logoutOption.click();
     }
 }
