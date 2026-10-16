@@ -53,4 +53,43 @@ describe('Login Tests', () => {
         await expect(loginScreen.passwordErrorMessage).toBeDisplayed();
         await expect(loginScreen.passwordErrorMessage).toHaveText('Sorry this user has been locked out.');
     });
+
+    it('Show an error when username is empty', async () => {
+
+        // Submit with an empty username and a valid password
+        await loginScreen.login(
+            loginData.emptyCredentials.username,
+            env.password
+        );
+
+        // Validate the username error
+        await expect(loginScreen.usernameErrorMessage).toBeDisplayed();
+        await expect(loginScreen.usernameErrorMessage).toHaveText('Username is required');
+    });
+
+    it('Show an error when password is empty', async () => {
+
+        // Submit with a valid username and an empty password
+        await loginScreen.login(
+            env.username,
+            loginData.emptyCredentials.password
+        );
+
+        // Validate the password error
+        await expect(loginScreen.passwordErrorMessage).toBeDisplayed();
+        await expect(loginScreen.passwordErrorMessage).toHaveText('Enter Password');
+    });
+
+    it('Show an error when username & password are empty', async () => {
+
+        // Submit with an empty username and a valid password
+        await loginScreen.login(
+            loginData.emptyCredentials.username,
+            loginData.emptyCredentials.password
+        );
+
+        // Validate the username error
+        await expect(loginScreen.usernameErrorMessage).toBeDisplayed();
+        await expect(loginScreen.usernameErrorMessage).toHaveText('Username is required');
+    });
 });
