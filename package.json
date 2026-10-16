@@ -18,6 +18,7 @@
   "scripts": {
     "test": "wdio run ./wdio.conf.ts",
     "typecheck": "tsc --noEmit",
-    "emulator": "\"$ANDROID_HOME/emulator/emulator\" -avd Pixel"
+    "emulator": "\"$ANDROID_HOME/emulator/emulator\" -avd Pixel",
+    "appium": "appium --address 127.0.0.1 --port 4723"
   }
 }
