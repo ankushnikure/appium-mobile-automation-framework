@@ -6,6 +6,10 @@ export class Header {
         return $('~View menu');
     }
 
+    private get cartIcon() {
+        return $('~View cart');
+    }
+
     public get cartBadge() {
         return $('id=com.saucelabs.mydemoapp.android:id/cartTV');
     }
@@ -13,5 +17,9 @@ export class Header {
     //Actions
     async openMenu(): Promise<void> {
         await this.menuButton.click();
+    }
+
+    async openCart(): Promise<void> {
+        await this.cartIcon.click();
     }
 }

@@ -1,6 +1,6 @@
 import { ProductDetailsScreen } from '@screens/product-details.screen'
 import { ProductsScreen } from '@screens/products.screen'
-import { Header } from '@components/headers.component';
+import { Header } from '@components/header.component';
 import productsData from '@test-data/products.data.json'
 
 const appId = 'com.saucelabs.mydemoapp.android';
@@ -23,7 +23,6 @@ describe('Product Details Test', () => {
     });
 
     it('Update the cart badge after adding a product', async () => {
-
         const productName = productsData.backpack.yellow;
 
         // Open product details
@@ -35,5 +34,22 @@ describe('Product Details Test', () => {
 
         // Validate the cart quantity
         await expect(header.cartBadge).toHaveText('1');
+    });
+
+    it('Add a product to the cart and open the cart screen', async () => {
+        const productName = productsData.backpack.yellow;
+
+        // Open product details
+        await productsScreen.scrollToProduct(productName);
+        await productsScreen.openProduct(productName);
+
+        // Add the product to the cart
+        await productDetailsScreen.addToCartProduct();
+
+        // Validate the cart badge
+        await expect(header.cartBadge).toHaveText('1');
+
+        // Open the cart
+        await header.openCart();
     });
 });
