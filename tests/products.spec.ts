@@ -20,7 +20,6 @@ describe('Products List Tests', () => {
     });
 
     it('Display the target product after scrolling', async () => {
-        
         const productName = 'Sauce Labs Bolt T-Shirt';
 
         // Scroll to the target product
@@ -32,7 +31,6 @@ describe('Products List Tests', () => {
     });
 
     it('Open product details after selecting a product', async () => {
-        
         const productName = 'Sauce Labs Backpack (yellow)';
 
         // Scroll to the target product

@@ -1,17 +1,19 @@
+import { Header } from '@components/header.component';
 import { NavigationMenu } from '@components/navigation-menu.component';
 import { LoginScreen } from '@screens/login.screen';
 import { browser, expect } from '@wdio/globals';
 import { env } from '@utils/env';
 import loginData from '@test-data/login.data.json'
 
-
 const appId = 'com.saucelabs.mydemoapp.android';
 
 describe('Login Tests', () => {
+    let header: Header;
     let navigationMenu: NavigationMenu;
     let loginScreen: LoginScreen;
 
     before(() => {
+        header = new Header();
         navigationMenu = new NavigationMenu();
         loginScreen = new LoginScreen();
     });
@@ -22,7 +24,7 @@ describe('Login Tests', () => {
         await browser.execute('mobile: activateApp', { appId });
 
         // Confirm the app starts logged out
-        await navigationMenu.openMenu();
+        await header.openMenu();
         await expect(navigationMenu.logoutOption).not.toBeDisplayed();
 
         // Open the Login screen
@@ -31,18 +33,16 @@ describe('Login Tests', () => {
     });
 
     it('Login with valid credentials', async () => {
-
         // Login with valid credentials
         await loginScreen.login(env.username, env.password);
 
         // Validate the logout option after login
-        await navigationMenu.openMenu();
+        await header.openMenu();
         await expect(navigationMenu.logoutOption).toBeDisplayed();
         await expect(navigationMenu.logoutOption).toHaveText('Log Out');
     });
 
     it('Login with a locked-out user', async () => {
-
         // Login with a locked-out user
         await loginScreen.login(
             loginData.lockedOutUser.username,
@@ -55,7 +55,6 @@ describe('Login Tests', () => {
     });
 
     it('Show an error when username is empty', async () => {
-
         // Submit with an empty username and a valid password
         await loginScreen.login(
             loginData.emptyCredentials.username,
@@ -68,7 +67,6 @@ describe('Login Tests', () => {
     });
 
     it('Show an error when password is empty', async () => {
-
         // Submit with a valid username and an empty password
         await loginScreen.login(
             env.username,
@@ -81,7 +79,6 @@ describe('Login Tests', () => {
     });
 
     it('Show an error when username & password are empty', async () => {
-
         // Submit with an empty username and a valid password
         await loginScreen.login(
             loginData.emptyCredentials.username,

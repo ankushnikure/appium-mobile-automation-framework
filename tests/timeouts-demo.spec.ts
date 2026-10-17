@@ -1,3 +1,4 @@
+import { Header } from '@components/header.component'
 import { NavigationMenu } from '@components/navigation-menu.component';
 import { LoginScreen } from '@screens/login.screen';
 import { browser, expect } from '@wdio/globals';
@@ -5,10 +6,12 @@ import { browser, expect } from '@wdio/globals';
 const appId = 'com.saucelabs.mydemoapp.android';
 
 describe('Timeout Examples', () => {
+    let header: Header;
     let navigationMenu: NavigationMenu;
     let loginScreen: LoginScreen;
 
     before(() => {
+        header = new Header();
         navigationMenu = new NavigationMenu();
         loginScreen = new LoginScreen();
     });
@@ -23,7 +26,6 @@ describe('Timeout Examples', () => {
     });
 
     it('Demonstrate wait and assertion timeouts', async function () {
-
         // Allow this test up to 90 seconds
         this.timeout(90000);
 
@@ -38,7 +40,7 @@ describe('Timeout Examples', () => {
         );
 
         // Open the Login screen
-        await navigationMenu.openMenu();
+        await header.openMenu();
         await navigationMenu.selectLogin();
 
         // Use the default waitforTimeout from wdio.conf.ts

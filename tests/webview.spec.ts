@@ -1,23 +1,26 @@
+import { Header } from '@components/header.component'
 import { NavigationMenu } from '@components/navigation-menu.component';
 import { WebViewScreen } from '@screens/webview.screen';
 import { browser, expect } from '@wdio/globals';
 
 
 describe('Webview Tests', () => {
+    let header: Header;
     let navigationMenu: NavigationMenu;
     let webViewScreen: WebViewScreen;
 
     beforeEach(async () => {
+        header = new Header();
         navigationMenu = new NavigationMenu();
         webViewScreen = new WebViewScreen();
 
+
         // Open the WebView screen
-        await navigationMenu.openMenu();
+        await header.openMenu();
         await navigationMenu.selectWebView();
     });
 
     it('Open the website inside the WebView', async () => {
-
         // Enter the URL and open the website
         await webViewScreen.enterUrl('https://shop.azaonline.in');
         await webViewScreen.goToSite();

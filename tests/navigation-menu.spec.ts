@@ -1,20 +1,23 @@
+import { Header } from '@components/header.component';
 import { NavigationMenu } from '@components/navigation-menu.component';
 import { LoginScreen } from '@screens/login.screen';
 import { expect } from '@wdio/globals';
 
 describe('Navigation Menu Tests', () => {
+    let header: Header;
     let navigationMenu: NavigationMenu;
+    let loginScreen: LoginScreen;
 
     beforeEach(() => {
+        header = new Header();
         navigationMenu = new NavigationMenu();
+        loginScreen = new LoginScreen();
+
     });
 
     it('Open the Login screen from the navigation menu', async () => {
-
-        const loginScreen = new LoginScreen();
-
         // Open the menu and select Login
-        await navigationMenu.openMenu();
+        await header.openMenu();
         await navigationMenu.selectLogin();
 
         // Validate the Login screen title
