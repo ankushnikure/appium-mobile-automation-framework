@@ -5,4 +5,9 @@ export class ProductDetailsScreen {
     public get addToCartButton() {
         return $('~Tap to add product to cart');
     }
+
+    //Actions
+    async addToCartProduct(): Promise<void> {
+        await this.addToCartButton.click();
+    }
 }
