@@ -1,0 +1,9 @@
+{
+    "backpack": {
+        "default": "Sauce Labs Backpack",
+        "orange": "Sauce Labs Backpack (orange)",
+        "red": "Sauce Labs Backpack (red)",
+        "violet": "Sauce Labs Backpack (violet)",
+        "yellow": "Sauce Labs Backpack (yellow)"
+    }
+}
