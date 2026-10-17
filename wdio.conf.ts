@@ -108,7 +108,14 @@ export const config: WebdriverIO.Config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['appium'],
+    services: [
+        ['appium', {
+            args: {
+                address: '127.0.0.1',
+                allowInsecure: 'uiautomator2:chromedriver_autodownload'
+            }
+        }]
+    ],
     //
     // The DevTools service shows a live dashboard of your run and can record a
     // replayable trace of every test. Install @wdio/devtools-service, then add

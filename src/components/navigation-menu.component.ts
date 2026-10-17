@@ -6,6 +6,10 @@ export class NavigationMenu {
         return $('~View menu');
     }
 
+    public get webviewOption() {
+        return $(`android=new UiSelector().text("WebView")`)
+    }
+
     public get loginOption() {
         return $('~Login Menu Item');
     }
@@ -17,6 +21,10 @@ export class NavigationMenu {
     // Actions
     async openMenu(): Promise<void> {
         await this.menuButton.click();
+    }
+
+    async selectWebView(): Promise<void> {
+        await this.webviewOption.click();
     }
 
     async selectLogin(): Promise<void> {
