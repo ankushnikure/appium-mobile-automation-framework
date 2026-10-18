@@ -44,4 +44,13 @@ describe('Products List Tests', () => {
         await expect(productDetailsScreen.addToCartButton).toBeDisplayed();
         await expect(productDetailsScreen.addToCartButton).toHaveText('Add to cart');
     });
-})
+
+    it('Swipe through the product list', async () => {
+        await productsScreen.swipe('up');
+    });
+
+    it.only('Find a product by swiping through the product list', async () => {
+        const productName = 'Sauce Labs Onesie';
+        await productsScreen.swipeToProduct(productName);
+    });
+});

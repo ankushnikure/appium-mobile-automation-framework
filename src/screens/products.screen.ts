@@ -1,4 +1,4 @@
-import { $, browser } from '@wdio/globals';
+import { $ } from '@wdio/globals';
 
 export class ProductsScreen {
     //Locators
@@ -25,30 +25,62 @@ export class ProductsScreen {
     }
 
     //Actions
-    async scrollDown(): Promise<boolean> {
-        const container = await this.productScrollContainer;
+    async scroll(direction: 'up' | 'down' | 'left' | 'right'): Promise<boolean> {
+        const scrollContainer = await this.productScrollContainer;
 
-        return browser.execute('mobile: scrollGesture', {
-            elementId: container.elementId,
-            direction: 'down',
-            percent: 0.75
+        return driver.execute('mobile: scrollGesture', {
+            elementId: scrollContainer.elementId,
+            direction,
+            percent: 0.75,
         });
     }
 
-    async scrollToProduct(productName: string, maxScrolls: number = 10): Promise<void> {
-        for (let attempt = 0; attempt <= maxScrolls; attempt++) {
+    async scrollToProduct(productName: string): Promise<void> {
+        const maxScrolls = 10;
+
+        for (let attempt = 0; attempt < maxScrolls; attempt++) {
             if (await this.productTitle(productName).isDisplayed()) {
                 return;
             }
 
-            if (attempt === maxScrolls) {
+            if (!await this.scroll('down')) {
                 break;
             }
+        }
 
-            await this.scrollDown();
+        if (await this.productTitle(productName).isDisplayed()) {
+            return;
         }
 
         throw new Error(`Product "${productName}" was not visible after scrolling`);
+    }
+
+    async swipe(direction: 'up' | 'down' | 'left' | 'right'): Promise<void> {
+        const scrollContainer = await this.productScrollContainer;
+
+        await driver.execute('mobile: swipeGesture', {
+            elementId: scrollContainer.elementId,
+            direction,
+            percent: 0.075,
+        });
+    }
+
+    async swipeToProduct(productName: string): Promise<void> {
+        const maxSwipes = 10;
+
+        for (let attempt = 0; attempt < maxSwipes; attempt++) {
+            if (await this.productTitle(productName).isDisplayed()) {
+                return;
+            }
+
+            await this.swipe('up');
+        }
+
+        if (await this.productTitle(productName).isDisplayed()) {
+            return;
+        }
+
+        throw new Error(`Product "${productName}" was not visible after swiping`)
     }
 
     async openProduct(productName: string): Promise<void> {
