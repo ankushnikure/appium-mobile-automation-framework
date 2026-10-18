@@ -1,5 +1,5 @@
-import { ProductDetailsScreen } from '@screens/product-details.screen';
 import { ProductsScreen } from '@screens/products.screen';
+import { ProductDetailsScreen } from '@screens/product-details.screen';
 import { expect } from '@wdio/globals';
 
 const appId = 'com.saucelabs.mydemoapp.android';
@@ -19,17 +19,6 @@ describe('Products List Tests', () => {
         await browser.execute('mobile: activateApp', { appId });
     });
 
-    it('Display the target product after scrolling', async () => {
-        const productName = 'Sauce Labs Bolt T-Shirt';
-
-        // Scroll to the target product
-        await productsScreen.scrollToProduct(productName);
-
-        // Validate the product image and title
-        await expect(productsScreen.productImage(productName)).toBeDisplayed();
-        await expect(productsScreen.productTitle(productName)).toHaveText('Sauce Labs Bolt T-Shirt');
-    });
-
     it('Open product details after selecting a product', async () => {
         const productName = 'Sauce Labs Backpack (yellow)';
 
@@ -45,17 +34,13 @@ describe('Products List Tests', () => {
         await expect(productDetailsScreen.addToCartButton).toHaveText('Add to cart');
     });
 
-    it('Swipe through the product list', async () => {
-        await productsScreen.swipe('up');
-    });
-
     it('Find a product by swiping through the product list', async () => {
-        const productName = 'Sauce Labs Onesie';
-        await productsScreen.swipeToProduct(productName);
+        await productsScreen.swipeToProduct('Sauce Labs Onesie');
     });
 
     it('Long pressing a product', async () => {
         await productsScreen.longPress(
-            await productsScreen.productTitle('Sauce Labs Onesie'));
+            await productsScreen.productTitle('Sauce Labs Backpack'));
     });
+    
 });

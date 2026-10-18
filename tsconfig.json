@@ -16,6 +16,7 @@
         ],
         "paths": {
             "@components/*": ["./src/components/*"],
+            "@helpers/*": ["./src/helpers/*"],
             "@screens/*": ["./src/screens/*"],
             "@test-data/*": ["./src/test-data/*"],
             "@utils/*": ["./src/utils/*"],
