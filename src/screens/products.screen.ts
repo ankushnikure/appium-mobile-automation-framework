@@ -83,6 +83,13 @@ export class ProductsScreen {
         throw new Error(`Product "${productName}" was not visible after swiping`)
     }
 
+    async longPress(element: WebdriverIO.Element): Promise<void> {
+        await driver.execute('mobile: longClickGesture', {
+            elementId: element.elementId,
+            duration: 2000
+        })
+    }
+
     async openProduct(productName: string): Promise<void> {
         await this.productImage(productName).click();
     }

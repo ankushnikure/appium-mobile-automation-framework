@@ -49,8 +49,13 @@ describe('Products List Tests', () => {
         await productsScreen.swipe('up');
     });
 
-    it.only('Find a product by swiping through the product list', async () => {
+    it('Find a product by swiping through the product list', async () => {
         const productName = 'Sauce Labs Onesie';
         await productsScreen.swipeToProduct(productName);
+    });
+
+    it('Long pressing a product', async () => {
+        await productsScreen.longPress(
+            await productsScreen.productTitle('Sauce Labs Onesie'));
     });
 });
