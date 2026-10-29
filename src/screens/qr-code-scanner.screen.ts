@@ -1,3 +1,5 @@
+import { $ } from '@wdio/globals';
+
 export class QrCodeScannerScreen {
     //Locators
     public get permissionIcon() {
