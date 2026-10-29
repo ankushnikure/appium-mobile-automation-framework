@@ -1,6 +1,7 @@
 import { Header } from '@components/header.component';
 import { NavigationMenu } from '@components/navigation-menu.component';
 import { ResetAppStateDialog } from '@components/reset-app-state.dialog.component';
+import { expect } from '@wdio/globals';
 
 // Tests handling of native app dialogs for Reset App State
 describe('Reset App State Test', () => {

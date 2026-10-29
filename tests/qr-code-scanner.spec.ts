@@ -1,6 +1,7 @@
 import { Header } from '@components/header.component';
 import { NavigationMenu } from '@components/navigation-menu.component';
 import { QrCodeScannerScreen } from '@screens/qr-code-scanner.screen';
+import { browser, expect } from '@wdio/globals';
 
 const appId = 'com.saucelabs.mydemoapp.android';
 

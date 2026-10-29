@@ -1,7 +1,7 @@
 import { Header } from '@components/header.component';
 import { NavigationMenu } from '@components/navigation-menu.component';
 import { LoginScreen } from '@screens/login.screen';
-import { expect } from '@wdio/globals';
+import { browser, expect } from '@wdio/globals';
 import { env } from '@utils/env'
 import { LogoutDialog } from '@components/logout-dialog.component';
 

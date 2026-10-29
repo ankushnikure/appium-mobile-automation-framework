@@ -1,6 +1,6 @@
 import { ProductsScreen } from '@screens/products.screen';
 import { ProductDetailsScreen } from '@screens/product-details.screen';
-import { expect } from '@wdio/globals';
+import { browser, expect } from '@wdio/globals';
 
 const appId = 'com.saucelabs.mydemoapp.android';
 

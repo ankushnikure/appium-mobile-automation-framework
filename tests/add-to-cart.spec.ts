@@ -2,6 +2,7 @@ import { ProductDetailsScreen } from '@screens/product-details.screen'
 import { ProductsScreen } from '@screens/products.screen'
 import { Header } from '@components/header.component';
 import productsData from '@test-data/products.data.json'
+import { browser, expect } from '@wdio/globals';
 
 const appId = 'com.saucelabs.mydemoapp.android';
 
