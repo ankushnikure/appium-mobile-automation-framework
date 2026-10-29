@@ -3,11 +3,15 @@ import { $ } from '@wdio/globals';
 export class NavigationMenu {
     // Locators
     public get webviewOption() {
-        return $('android=new UiSelector().text("WebView")')
+        return $('android=new UiSelector().text("WebView")');
+    }
+
+    public get qrCodeScannerOption() {
+        return $('android=new UiSelector().text("QR Code Scanner")');
     }
 
     public get resetAppStateOption() {
-        return $('android=new UiSelector().text("Reset App State")')
+        return $('android=new UiSelector().text("Reset App State")');
     }
 
     public get loginOption() {
@@ -21,6 +25,10 @@ export class NavigationMenu {
     // Actions
     async selectWebView(): Promise<void> {
         await this.webviewOption.click();
+    }
+
+    async selectQrCodeScanner() {
+        await this.qrCodeScannerOption.click();
     }
 
     async selectResetAppState(): Promise<void> {
