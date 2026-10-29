@@ -4,6 +4,7 @@ import { LoginScreen } from '@screens/login.screen';
 import { browser, expect } from '@wdio/globals';
 import { env } from '@utils/env';
 import loginData from '@test-data/login.data.json'
+import { KeyboardHelper } from '@helpers/keyboard.helper';
 
 const appId = 'com.saucelabs.mydemoapp.android';
 
@@ -11,11 +12,13 @@ describe('Login Tests', () => {
     let header: Header;
     let navigationMenu: NavigationMenu;
     let loginScreen: LoginScreen;
+    let keyboardHelper: KeyboardHelper;
 
     before(() => {
         header = new Header();
         navigationMenu = new NavigationMenu();
         loginScreen = new LoginScreen();
+        keyboardHelper = new KeyboardHelper();
     });
 
     beforeEach(async () => {
@@ -88,5 +91,13 @@ describe('Login Tests', () => {
         // Validate the username error
         await expect(loginScreen.usernameErrorMessage).toBeDisplayed();
         await expect(loginScreen.usernameErrorMessage).toHaveText('Username is required');
+    });
+
+    it('Display and hide the keyboard', async () => {
+        await loginScreen.tapPasswordInput();
+        expect(await browser.isKeyboardShown()).toBe(true);
+
+        await keyboardHelper.hideKeyboard();
+        expect(await browser.isKeyboardShown()).toBe(false);
     });
 });

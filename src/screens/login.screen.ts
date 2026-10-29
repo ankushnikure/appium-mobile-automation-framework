@@ -36,4 +36,8 @@ export class LoginScreen {
         await this.passwordInput.setValue(password);
         await this.loginButton.click();
     }
+
+    async tapPasswordInput(): Promise<void> {
+        await this.passwordInput.click();
+    }
 }
