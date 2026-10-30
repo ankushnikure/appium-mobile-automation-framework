@@ -5,6 +5,10 @@ export class ProductsScreen {
     private readonly gestures = new GestureHelper();
 
     //Locators
+    public get screenTitle() {
+        return $('~title');
+    }
+
     private get productScrollContainer() {
         return $('id=com.saucelabs.mydemoapp.android:id/scrollView');
     }
