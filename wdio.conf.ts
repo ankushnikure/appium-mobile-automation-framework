@@ -1,3 +1,7 @@
+// The node: prefix explicitly identifies Node.js built-in modules and avoids ambiguity with external packages.
+import fs from 'node:fs';
+import path from 'node:path';
+
 export const config: WebdriverIO.Config = {
     //
     // ====================
@@ -246,9 +250,26 @@ export const config: WebdriverIO.Config = {
      * @param {boolean} result.passed    true if test has passed, otherwise false
      * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    // afterTest: function(test, context, { error, result, duration, passed, retries }) {
-    // },
+    afterTest: async (test, { passed }) => {
+        if (!passed) {
+            // Define a directory to save your failure screenshots
+            const screenshotDir = path.join(process.cwd(), 'artifacts', 'screenshots');
 
+            // Create the directory if it doesn't exist
+            if (!fs.existsSync(screenshotDir)) {
+                fs.mkdirSync(screenshotDir, { recursive: true });
+            }
+
+            // Create a unique file name using the test title and timestamp
+            const testName = test.title.replace(/[^a-zA-Z0-9-_]/g, '_');
+            const timestamp =
+                `${new Date().toLocaleDateString('en-IN').replace(/\//g, '-')}
+                _${new Date().toLocaleTimeString('en-IN', { hour12: false })}`;
+            const screenshotPath = path.join(screenshotDir, `${testName}_${timestamp}.png`);
+
+            await browser.saveScreenshot(screenshotPath);
+        }
+    },
 
     /**
      * Hook that gets executed after the suite has ended

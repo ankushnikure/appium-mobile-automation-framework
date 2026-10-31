@@ -19,3 +19,6 @@ videos/
 
 # macOS files
 .DS_Store
+
+# Test artifacts
+artifacts/
