@@ -1,6 +1,7 @@
 // The node: prefix explicitly identifies Node.js built-in modules and avoids ambiguity with external packages.
 import fs from 'node:fs';
 import path from 'node:path';
+import allure from '@wdio/allure-reporter';
 
 export const config: WebdriverIO.Config = {
     //
@@ -147,7 +148,15 @@ export const config: WebdriverIO.Config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec'],
+    reporters: [
+        'spec',
+        [
+            'allure',
+            {
+                outputDir: 'allure-results',
+            },
+        ],
+    ],
 
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
@@ -268,6 +277,12 @@ export const config: WebdriverIO.Config = {
             const screenshotPath = path.join(screenshotDir, `${testName}_${timestamp}.png`);
 
             await browser.saveScreenshot(screenshotPath);
+
+            allure.addAttachment(
+                'Failure Screenshot',
+                fs.readFileSync(screenshotPath),
+                'image/png',
+            );
         }
     },
 

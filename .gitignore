@@ -22,3 +22,5 @@ videos/
 
 # Test artifacts
 artifacts/
+allure-results/
+allure-report/
