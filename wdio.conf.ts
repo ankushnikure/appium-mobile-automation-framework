@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import allure from '@wdio/allure-reporter';
+import androidLogsHelper from '@helpers/android-logs.helper';
 
 export const config: WebdriverIO.Config = {
     //
@@ -114,12 +115,16 @@ export const config: WebdriverIO.Config = {
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
     services: [
-        ['appium', {
-            args: {
-                address: '127.0.0.1',
-                allowInsecure: 'uiautomator2:chromedriver_autodownload'
-            }
-        }]
+        [
+            'appium',
+            {
+                args: {
+                    address: '127.0.0.1',
+                    allowInsecure: 'uiautomator2:chromedriver_autodownload',
+                },
+                logPath: './artifacts/appium-logs',
+            },
+        ],
     ],
     //
     // The DevTools service shows a live dashboard of your run and can record a
@@ -283,6 +288,8 @@ export const config: WebdriverIO.Config = {
                 fs.readFileSync(screenshotPath),
                 'image/png',
             );
+
+            await androidLogsHelper.captureLogs(test.title);
         }
     },
 
