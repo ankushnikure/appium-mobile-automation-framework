@@ -26,5 +26,11 @@ pipeline {
                 '''
             }
         }
+
+        stage('Run Appium Tests') {
+            steps {
+                sh 'npm test'
+            }
+        }       
     }
 }
