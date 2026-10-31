@@ -24,5 +24,9 @@
     "emulator": "\"$ANDROID_HOME/emulator/emulator\" -avd Pixel",
     "appium": "appium --address 127.0.0.1 --port 4723",
     "allure:report": "allure generate allure-results --clean -o allure-report && allure open allure-report"
+  },
+  "allowScripts": {
+    "appium@3.8.0": true,
+    "esbuild@0.28.2": true
   }
 }
