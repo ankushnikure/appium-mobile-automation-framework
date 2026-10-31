@@ -11,7 +11,7 @@ export class AndroidLogsHelper {
         const fileName = testName.replace(/[^a-zA-Z0-9-_]/g, '_');
         const logPath = path.join(logDirectory, `${fileName}.log`);
 
-        const logs = execSync('adb logcat -d -v time', {
+        const logs = execSync('adb logcat -d -v time *:E', {
             encoding: 'utf-8',
             maxBuffer: 10 * 1024 * 1024,
         });
