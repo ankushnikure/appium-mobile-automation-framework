@@ -29,8 +29,21 @@ pipeline {
 
         stage('Run Appium Tests') {
             steps {
-                sh 'npm test'
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'qa-login-credentials',
+                        usernameVariable: 'USERNAME',
+                        passwordVariable: 'PASSWORD'
+                    )
+                ]) {
+                    sh '''
+                        set +x
+                        trap 'rm -f .env.qa' EXIT
+                        printf 'USERNAME=%s\\nPASSWORD=%s\\n' "$USERNAME" "$PASSWORD" > .env.qa
+                        npm test
+                    '''
+                }
             }
-        }       
+        }
     }
 }
