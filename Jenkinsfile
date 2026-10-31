@@ -31,7 +31,7 @@ pipeline {
             steps {
                 withCredentials([
                     usernamePassword(
-                        credentialsId: 'qa-login-credentials',
+                        credentialsId: 'mydemoapp-login-credentials',
                         usernameVariable: 'USERNAME',
                         passwordVariable: 'PASSWORD'
                     )
