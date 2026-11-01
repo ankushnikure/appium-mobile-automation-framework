@@ -268,8 +268,8 @@ export const config: WebdriverIO.Config = {
      * @param {boolean} result.passed    true if test has passed, otherwise false
      * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    afterTest: async (test, { passed }) => {
-        if (passed === false) {
+    afterTest: async (test, context, { passed }) => {
+        if (!passed) {
             // Define a directory to save your failure screenshots
             const screenshotDir = path.join(process.cwd(), 'artifacts', 'screenshots');
 
@@ -280,9 +280,7 @@ export const config: WebdriverIO.Config = {
 
             // Create a unique file name using the test title and timestamp
             const testName = test.title.replace(/[^a-zA-Z0-9-_]/g, '_');
-            const timestamp =
-                `${new Date().toLocaleDateString('en-IN').replace(/\//g, '-')}
-                _${new Date().toLocaleTimeString('en-IN', { hour12: false })}`;
+            const timestamp = `${new Date().toLocaleDateString('en-IN').replace(/\//g, '-')}_${new Date().toLocaleTimeString('en-IN', { hour12: false })}`;
             const screenshotPath = path.join(screenshotDir, `${testName}_${timestamp}.png`);
 
             await browser.saveScreenshot(screenshotPath);
