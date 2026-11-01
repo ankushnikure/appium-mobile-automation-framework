@@ -40,7 +40,7 @@ pipeline {
                         set +x
                         trap 'rm -f .env.qa' EXIT
                         printf 'USERNAME=%s\\nPASSWORD=%s\\n' "$USERNAME" "$PASSWORD" > .env.qa
-                        npm test
+                        npx wdio run wdio.conf.ts --spec tests/webview.spec.ts
                     '''
                 }
             }
