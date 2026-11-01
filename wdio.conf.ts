@@ -269,7 +269,7 @@ export const config: WebdriverIO.Config = {
      * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
     afterTest: async (test, { passed }) => {
-        if (!passed) {
+        if (passed === false) {
             // Define a directory to save your failure screenshots
             const screenshotDir = path.join(process.cwd(), 'artifacts', 'screenshots');
 
