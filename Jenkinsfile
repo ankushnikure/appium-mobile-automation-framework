@@ -27,6 +27,16 @@ pipeline {
             }
         }
 
+        stage('Clean Previous Artifacts') {
+            steps {
+                sh '''
+                    rm -rf artifacts
+                    rm -rf allure-results
+                    rm -rf allure-report
+                '''
+            }
+        }
+
         stage('Run Appium Tests') {
             steps {
                 withCredentials([
