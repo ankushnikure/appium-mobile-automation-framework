@@ -46,4 +46,21 @@ pipeline {
             }
         }
     }
+
+    post {
+        always {
+            script {
+                sh '''
+                    if [ -d allure-results ] && [ "$(find allure-results -type f | wc -l)" -gt 0 ]; then
+                        npx allure generate allure-results --clean -o allure-report || true
+                    fi
+                '''
+            }
+
+            archiveArtifacts(
+                artifacts: 'artifacts/**/*, allure-results/**/*, allure-report/**/*',
+                allowEmptyArchive: true
+            )
+        }
+    }
 }
