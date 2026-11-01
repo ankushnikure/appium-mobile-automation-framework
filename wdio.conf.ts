@@ -64,7 +64,11 @@ export const config: WebdriverIO.Config = {
         'appium:automationName': 'UiAutomator2',
         'appium:deviceName': 'Pixel',
         'appium:udid': 'emulator-5554',
-        'appium:app': '/Users/ankush/Downloads/mda-2.3.0-27.apk'
+        'appium:app': '/Users/ankush/Downloads/mda-2.3.0-27.apk',
+        'appium:appPackage': 'com.saucelabs.mydemoapp.android',
+        'appium:appActivity': 'com.saucelabs.mydemoapp.android.view.activities.SplashActivity',
+        'appium:appWaitActivity': 'com.saucelabs.mydemoapp.android.view.activities.*',
+        'appium:appWaitDuration': 30000
     }],
 
     //
