@@ -2,6 +2,7 @@ import { Header } from '@components/header.component'
 import { NavigationMenu } from '@components/navigation-menu.component';
 import { LoginScreen } from '@screens/login.screen';
 import { browser, expect } from '@wdio/globals';
+import appStateHelper from '@helpers/app-state.helper';
 
 const appId = 'com.saucelabs.mydemoapp.android';
 
@@ -20,9 +21,7 @@ describe('Timeout Examples', () => {
         // Allow this setup hook up to 90 seconds
         this.timeout(90000);
 
-        // Clear app data and relaunch
-        await browser.execute('mobile: clearApp', { appId });
-        await browser.execute('mobile: activateApp', { appId });
+        await appStateHelper.resetApp();
     });
 
     it('Demonstrate wait and assertion timeouts', async function () {

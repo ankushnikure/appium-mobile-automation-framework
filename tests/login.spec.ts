@@ -5,8 +5,7 @@ import { browser, expect } from '@wdio/globals';
 import { env } from '@utils/env';
 import loginData from '@test-data/login.data.json'
 import { KeyboardHelper } from '@helpers/keyboard.helper';
-
-const appId = 'com.saucelabs.mydemoapp.android';
+import appStateHelper from '@helpers/app-state.helper';
 
 describe('Login Tests', () => {
     let header: Header;
@@ -22,73 +21,40 @@ describe('Login Tests', () => {
     });
 
     beforeEach(async () => {
-        // Clear app data and relaunch before each test
-        await browser.execute('mobile: clearApp', { appId });
-        await browser.execute('mobile: activateApp', { appId });
-
-        // Confirm the app starts logged out
+        await appStateHelper.resetApp();
         await header.openMenu();
         await expect(navigationMenu.logoutOption).not.toBeDisplayed();
-
-        // Open the Login screen
         await navigationMenu.selectLogin();
         await expect(loginScreen.loginTitle).toBeDisplayed();
     });
 
     it('Login with valid credentials', async () => {
-        // Login with valid credentials
         await loginScreen.login(env.username, env.password);
-
-        // Validate the logout option after login
         await header.openMenu();
         await expect(navigationMenu.logoutOption).toBeDisplayed();
         await expect(navigationMenu.logoutOption).toHaveText('Log Out');
     });
 
     it('Login with a locked-out user', async () => {
-        // Login with a locked-out user
-        await loginScreen.login(
-            loginData.lockedOutUser.username,
-            loginData.lockedOutUser.password
-        );
-
-        // Validate the error message
+        await loginScreen.login(loginData.lockedOutUser.username, loginData.lockedOutUser.password);
         await expect(loginScreen.passwordErrorMessage).toBeDisplayed();
         await expect(loginScreen.passwordErrorMessage).toHaveText('Sorry this user has been locked out.');
     });
 
     it('Show an error when username is empty', async () => {
-        // Submit with an empty username and a valid password
-        await loginScreen.login(
-            loginData.emptyCredentials.username,
-            env.password
-        );
-
-        // Validate the username error
+        await loginScreen.login(loginData.emptyCredentials.username, env.password);
         await expect(loginScreen.usernameErrorMessage).toBeDisplayed();
         await expect(loginScreen.usernameErrorMessage).toHaveText('Username is required');
     });
 
     it('Show an error when password is empty', async () => {
-        // Submit with a valid username and an empty password
-        await loginScreen.login(
-            env.username,
-            loginData.emptyCredentials.password
-        );
-
-        // Validate the password error
+        await loginScreen.login(env.username, loginData.emptyCredentials.password);
         await expect(loginScreen.passwordErrorMessage).toBeDisplayed();
         await expect(loginScreen.passwordErrorMessage).toHaveText('Enter Password');
     });
 
     it('Show an error when username & password are empty', async () => {
-        // Submit with an empty username and a valid password
-        await loginScreen.login(
-            loginData.emptyCredentials.username,
-            loginData.emptyCredentials.password
-        );
-
-        // Validate the username error
+        await loginScreen.login(loginData.emptyCredentials.username, loginData.emptyCredentials.password);
         await expect(loginScreen.usernameErrorMessage).toBeDisplayed();
         await expect(loginScreen.usernameErrorMessage).toHaveText('Username is required');
     });
@@ -96,7 +62,6 @@ describe('Login Tests', () => {
     it('Display and hide the keyboard', async () => {
         await loginScreen.tapPasswordInput();
         expect(await browser.isKeyboardShown()).toBe(true);
-
         await keyboardHelper.hideKeyboard();
         expect(await browser.isKeyboardShown()).toBe(false);
     });

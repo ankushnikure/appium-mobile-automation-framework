@@ -1,8 +1,7 @@
 import { ProductsScreen } from '@screens/products.screen';
 import { ProductDetailsScreen } from '@screens/product-details.screen';
-import { browser, expect } from '@wdio/globals';
-
-const appId = 'com.saucelabs.mydemoapp.android';
+import { expect } from '@wdio/globals';
+import appStateHelper from '@helpers/app-state.helper';
 
 describe('Products List Tests', () => {
     let productsScreen: ProductsScreen;
@@ -14,22 +13,15 @@ describe('Products List Tests', () => {
     });
 
     beforeEach(async () => {
-        // Reset the app to start on Products with the list at the top
-        await browser.execute('mobile: clearApp', { appId });
-        await browser.execute('mobile: activateApp', { appId });
+        await appStateHelper.resetApp();
     });
 
     it('Open product details after selecting a product', async () => {
         const productName = 'Sauce Labs Backpack (yellow)';
 
-        // Scroll to the target product
         await productsScreen.scrollToProduct(productName);
         await expect(productsScreen.productImage(productName)).toBeDisplayed();
-
-        // Open product details
         await productsScreen.openProduct(productName);
-
-        // Validate the product details screen
         await expect(productDetailsScreen.addToCartButton).toBeDisplayed();
         await expect(productDetailsScreen.addToCartButton).toHaveText('Add to cart');
     });
@@ -42,5 +34,4 @@ describe('Products List Tests', () => {
         await productsScreen.longPress(
             await productsScreen.productTitle('Sauce Labs Backpack'));
     });
-    
 });
