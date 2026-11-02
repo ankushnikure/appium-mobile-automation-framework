@@ -27,15 +27,15 @@ export class QrCodeScannerScreen {
     }
 
     //Actions
-    async allowWhileUsingTheApp() {
+    async allowWhileUsingTheApp(): Promise<void> {
         await this.whileUsingTheAppButton.click();
     }
 
-    async allowOnlyThisTime() {
+    async allowOnlyThisTime(): Promise<void> {
         await this.onlyThisTimeButton.click();
     }
 
-    async dontAllow() {
+    async dontAllow(): Promise<void> {
         await this.dontAllowButton.click();
     }
 }
