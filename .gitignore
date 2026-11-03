@@ -24,3 +24,6 @@ videos/
 artifacts/
 allure-results/
 allure-report/
+
+# Android APK files
+apps/*.apk

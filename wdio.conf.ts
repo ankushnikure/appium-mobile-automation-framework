@@ -52,24 +52,38 @@ export const config: WebdriverIO.Config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 1,
+    maxInstances: 2,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [{
-        // capabilities for local Appium web tests on an Android Emulator
-        platformName: 'Android',
-        'appium:automationName': 'UiAutomator2',
-        'appium:deviceName': 'Pixel',
-        'appium:udid': 'emulator-5554',
-        'appium:app': '/Users/ankush/Downloads/mda-2.3.0-27.apk',
-        'appium:appPackage': 'com.saucelabs.mydemoapp.android',
-        'appium:appActivity': 'com.saucelabs.mydemoapp.android.view.activities.SplashActivity',
-        'appium:appWaitActivity': 'com.saucelabs.mydemoapp.android.view.activities.*',
-        'appium:appWaitDuration': 30000
-    }],
+    capabilities: [
+        {
+            platformName: 'Android',
+            'appium:automationName': 'UiAutomator2',
+            'appium:deviceName': 'Pixel 5',
+            'appium:udid': 'emulator-5554',
+            'appium:app': process.env.APP_PATH || './apps/mda-2.3.0-27.apk',
+            'appium:appPackage': 'com.saucelabs.mydemoapp.android',
+            'appium:appActivity': 'com.saucelabs.mydemoapp.android.view.activities.SplashActivity',
+            'appium:appWaitActivity': 'com.saucelabs.mydemoapp.android.view.activities.*',
+            'appium:appWaitDuration': 30000,
+            'appium:systemPort': 8200,
+        },
+        {
+            platformName: 'Android',
+            'appium:automationName': 'UiAutomator2',
+            'appium:deviceName': 'Pixel 4',
+            'appium:udid': 'emulator-5556',
+            'appium:app': process.env.APP_PATH || './apps/mda-2.3.0-27.apk',
+            'appium:appPackage': 'com.saucelabs.mydemoapp.android',
+            'appium:appActivity': 'com.saucelabs.mydemoapp.android.view.activities.SplashActivity',
+            'appium:appWaitActivity': 'com.saucelabs.mydemoapp.android.view.activities.*',
+            'appium:appWaitDuration': 30000,
+            'appium:systemPort': 8201,
+        },
+    ],
 
     //
     // ===================
@@ -268,7 +282,21 @@ export const config: WebdriverIO.Config = {
      * @param {boolean} result.passed    true if test has passed, otherwise false
      * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
+
+    beforeTest: async (test) => {
+        const capabilities = browser.capabilities as Record<string, unknown>;
+        const deviceId = String(capabilities['udid'] ?? 'unknown-device');
+
+        console.log(`[${deviceId}] Starting: ${test.title}`);
+    },
+
     afterTest: async (test, _context, { passed }) => {
+        const capabilities = browser.capabilities as Record<string, unknown>;
+        const deviceId = String(capabilities['udid'] ?? 'unknown-device');
+        const status = passed ? 'PASSED' : 'FAILED';
+
+        console.log(`[${deviceId}] ${status}: ${test.title}`);
+
         if (!passed) {
             // Define a directory to save your failure screenshots
             const screenshotDir = path.join(process.cwd(), 'artifacts', 'screenshots');
@@ -280,8 +308,9 @@ export const config: WebdriverIO.Config = {
 
             // Create a unique file name using the test title and timestamp
             const testName = test.title.replace(/[^a-zA-Z0-9-_]/g, '_');
-            const timestamp = `${new Date().toLocaleDateString('en-IN').replace(/\//g, '-')}_${new Date().toLocaleTimeString('en-IN', { hour12: false })}`;
-            const screenshotPath = path.join(screenshotDir, `${testName}_${timestamp}.png`);
+            const testDeviceId = deviceId.replace(/[^a-zA-Z0-9-_]/g, '_');
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            const screenshotPath = path.join(screenshotDir, `${testName}_${testDeviceId}_${timestamp}.png`);
 
             await browser.saveScreenshot(screenshotPath);
 
@@ -291,7 +320,7 @@ export const config: WebdriverIO.Config = {
                 'image/png',
             );
 
-            await androidLogsHelper.captureLogs(test.title);
+            await androidLogsHelper.captureLogs(test.title, deviceId);
         }
     },
 
