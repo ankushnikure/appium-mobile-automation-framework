@@ -2,10 +2,14 @@ import { browser, expect } from '@wdio/globals';
 
 describe('App Launch Tests', () => {
     it('Display My Demo App in the foreground', async () => {
-        // Get the package name of the foreground Android app
-        const currentPackage = await browser.getCurrentPackage();
+        const platformName = browser.capabilities.platformName;
 
-        // Confirm that My Demo App is in the foreground
-        expect(currentPackage).toBe('com.saucelabs.mydemoapp.android');
+        if (platformName === 'Android') {
+            const currentPackage = await browser.getCurrentPackage();
+            expect(currentPackage).toBe('com.saucelabs.mydemoapp.android');
+        } else if (platformName === 'iOS') {
+            const currentBundleId = await browser.execute('mobile: activeAppInfo') as { bundleId: string; };
+            expect(currentBundleId.bundleId).toBe('com.saucelabs.mydemo.app.ios');
+        }
     });
 });

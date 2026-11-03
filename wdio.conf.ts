@@ -52,37 +52,47 @@ export const config: WebdriverIO.Config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 2,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [
+        // {
+        //     platformName: 'Android',
+        //     'appium:automationName': 'UiAutomator2',
+        //     'appium:deviceName': 'Pixel 5',
+        //     'appium:udid': 'emulator-5554',
+        //     'appium:app': process.env.APP_PATH || './apps/mda-2.3.0-27.apk',
+        //     'appium:appPackage': 'com.saucelabs.mydemoapp.android',
+        //     'appium:appActivity': 'com.saucelabs.mydemoapp.android.view.activities.SplashActivity',
+        //     'appium:appWaitActivity': 'com.saucelabs.mydemoapp.android.view.activities.*',
+        //     'appium:appWaitDuration': 30000,
+        //     'appium:systemPort': 8200,
+        // },
+        // {
+        //     platformName: 'Android',
+        //     'appium:automationName': 'UiAutomator2',
+        //     'appium:deviceName': 'Pixel 4',
+        //     'appium:udid': 'emulator-5556',
+        //     'appium:app': process.env.APP_PATH || './apps/mda-2.3.0-27.apk',
+        //     'appium:appPackage': 'com.saucelabs.mydemoapp.android',
+        //     'appium:appActivity': 'com.saucelabs.mydemoapp.android.view.activities.SplashActivity',
+        //     'appium:appWaitActivity': 'com.saucelabs.mydemoapp.android.view.activities.*',
+        //     'appium:appWaitDuration': 30000,
+        //     'appium:systemPort': 8201,
+        // },
         {
-            platformName: 'Android',
-            'appium:automationName': 'UiAutomator2',
-            'appium:deviceName': 'Pixel 5',
-            'appium:udid': 'emulator-5554',
-            'appium:app': process.env.APP_PATH || './apps/mda-2.3.0-27.apk',
-            'appium:appPackage': 'com.saucelabs.mydemoapp.android',
-            'appium:appActivity': 'com.saucelabs.mydemoapp.android.view.activities.SplashActivity',
-            'appium:appWaitActivity': 'com.saucelabs.mydemoapp.android.view.activities.*',
-            'appium:appWaitDuration': 30000,
-            'appium:systemPort': 8200,
-        },
-        {
-            platformName: 'Android',
-            'appium:automationName': 'UiAutomator2',
-            'appium:deviceName': 'Pixel 4',
-            'appium:udid': 'emulator-5556',
-            'appium:app': process.env.APP_PATH || './apps/mda-2.3.0-27.apk',
-            'appium:appPackage': 'com.saucelabs.mydemoapp.android',
-            'appium:appActivity': 'com.saucelabs.mydemoapp.android.view.activities.SplashActivity',
-            'appium:appWaitActivity': 'com.saucelabs.mydemoapp.android.view.activities.*',
-            'appium:appWaitDuration': 30000,
-            'appium:systemPort': 8201,
-        },
+            platformName: 'iOS',
+            'appium:automationName': 'XCUITest',
+            'appium:deviceName': 'iPhone 18 Pro',
+            'appium:platformVersion': '27.2',
+            'appium:udid': 'D6628655-C0B1-4D76-9027-CCFAE4830BA7',
+            'appium:app': './apps/My Demo App.app',
+            'appium:bundleId': 'com.saucelabs.mydemo.app.ios',
+            'appium:noReset': false,
+        }
     ],
 
     //
@@ -293,6 +303,7 @@ export const config: WebdriverIO.Config = {
     afterTest: async (test, _context, { passed }) => {
         const capabilities = browser.capabilities as Record<string, unknown>;
         const deviceId = String(capabilities['udid'] ?? 'unknown-device');
+        const platformName = String(capabilities['platformName'] ?? 'unknown');
         const status = passed ? 'PASSED' : 'FAILED';
 
         console.log(`[${deviceId}] ${status}: ${test.title}`);
@@ -320,7 +331,9 @@ export const config: WebdriverIO.Config = {
                 'image/png',
             );
 
-            await androidLogsHelper.captureLogs(test.title, deviceId);
+            if (platformName.toLowerCase() === 'android') {
+                await androidLogsHelper.captureLogs(test.title, deviceId);
+            }
         }
     },
 
