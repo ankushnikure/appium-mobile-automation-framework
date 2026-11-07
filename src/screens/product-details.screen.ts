@@ -1,13 +1,21 @@
 import { $ } from '@wdio/globals';
+import { BaseScreen } from './base.screen';
+import Platform from '@helpers/platform.helper';
 
-export class ProductDetailsScreen {
-    //Locators
+export class ProductDetailsScreen extends BaseScreen {
+
+    // ==================== LOCATORS ====================
     public get addToCartButton() {
-        return $('~Tap to add product to cart');
+        return Platform.isIOS
+            ? $('~AddToCart')
+            : $('~Tap to add product to cart');
     }
 
-    //Actions
-    async addToCartProduct(): Promise<void> {
+    // ==================== ACTIONS ====================
+
+    async addProductToCart(): Promise<void> {
         await this.addToCartButton.click();
     }
 }
+
+export default new ProductDetailsScreen();
