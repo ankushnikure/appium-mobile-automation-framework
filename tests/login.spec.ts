@@ -8,7 +8,6 @@ import loginData from '@test-data/login.data.json'
 import appState from '@helpers/app-state.helper';
 
 describe('Login Tests', () => {
-
     beforeEach(async () => {
         await appState.resetApp();
         await navigation.openMenu();

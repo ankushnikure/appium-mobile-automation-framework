@@ -1,28 +1,31 @@
 import { $ } from '@wdio/globals';
 import { BaseScreen } from './base.screen';
+import Platform from '@helpers/platform.helper';
 
 export class LoginScreen extends BaseScreen {
-    // Locators
+
+    // ==================== LOCATORS ====================
+
     private get loginTitle() {
-        return this.isIOS()
+        return Platform.isIOS
             ? $('-ios class chain:**/XCUIElementTypeStaticText[`name == "Login"`][1]')
             : $('id=com.saucelabs.mydemoapp.android:id/loginTV');
     }
 
     private get usernameInput() {
-        return this.isIOS()
+        return Platform.isIOS
             ? $('-ios class chain:**/XCUIElementTypeTextField')
             : $('id=com.saucelabs.mydemoapp.android:id/nameET');
     }
 
     private get passwordInput() {
-        return this.isIOS()
+        return Platform.isIOS
             ? $('-ios class chain:**/XCUIElementTypeSecureTextField')
             : $('id=com.saucelabs.mydemoapp.android:id/passwordET');
     }
 
     private get loginButton() {
-        return this.isIOS()
+        return Platform.isIOS
             ? $('-ios class chain:**/XCUIElementTypeButton[`name == "Login"`]')
             : $('~Tap to login with given credentials');
     }
@@ -35,24 +38,17 @@ export class LoginScreen extends BaseScreen {
         return $('id=com.saucelabs.mydemoapp.android:id/passwordErrorTV');
     }
 
-    public get errorIcon() {
-        return $('~Indicates error');
-    }
+    // ==================== ACTIONS ====================
 
-    // Actions
     async isLoginTitleDisplayed(): Promise<boolean> {
         return await this.loginTitle.isDisplayed();
     }
-    
+
     async login(username: string, password: string): Promise<void> {
         await this.usernameInput.setValue(username);
         await this.passwordInput.setValue(password);
         await this.hideKeyboard();
         await this.loginButton.click();
-    }
-
-    async tapPasswordInput(): Promise<void> {
-        await this.passwordInput.click();
     }
 
     async isErrorMessageDisplayed(): Promise<boolean> {
@@ -70,7 +66,6 @@ export class LoginScreen extends BaseScreen {
     async getUsernameErrorMessage(): Promise<string> {
         return this.usernameErrorMessage.getText();
     }
-
 }
 
 export default new LoginScreen(); 
