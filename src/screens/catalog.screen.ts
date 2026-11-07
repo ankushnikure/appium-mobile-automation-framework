@@ -1,10 +1,15 @@
 import { $ } from '@wdio/globals';
 import { GestureHelper } from '@helpers/gesture.helper';
-export class ProductsScreen {
+
+export class CatalogScreen {
 
     private readonly gestures = new GestureHelper();
 
     //Locators
+    public get cartBadge() {
+        return $('id=com.saucelabs.mydemoapp.android:id/cartTV');
+    }
+
     public get screenTitle() {
         return $('~title');
     }
@@ -84,3 +89,5 @@ export class ProductsScreen {
         await this.gestures.longPress(element);
     }
 }
+
+export default new CatalogScreen();

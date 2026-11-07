@@ -1,7 +1,7 @@
 import { Header } from '@components/header.component';
-import { NavigationMenu } from '@components/navigation-menu.component';
+import { NavigationMenu } from '@components/navigation.component';
 import { LoginScreen } from '@screens/login.screen';
-import { ProductsScreen } from '@screens/products.screen';
+import { ProductsScreen } from '@screens/catalog.screen';
 import { browser, expect } from '@wdio/globals';
 
 const appId = 'com.saucelabs.mydemoapp.android'

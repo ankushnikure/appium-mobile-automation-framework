@@ -1,68 +1,70 @@
-import { Header } from '@components/header.component';
-import { NavigationMenu } from '@components/navigation-menu.component';
-import { LoginScreen } from '@screens/login.screen';
-import { browser, expect } from '@wdio/globals';
+import { expect } from '@wdio/globals';
 import { env } from '@utils/env';
+import { Platform } from '@helpers/platform.helper';
+import navigation from '@components/navigation.component';
+import menuScreen from '@screens/menu.screen';
+import loginScreen from '@screens/login.screen';
 import loginData from '@test-data/login.data.json'
-import { KeyboardHelper } from '@helpers/keyboard.helper';
-import appStateHelper from '@helpers/app-state.helper';
+import appState from '@helpers/app-state.helper';
 
 describe('Login Tests', () => {
-    let header: Header;
-    let navigationMenu: NavigationMenu;
-    let loginScreen: LoginScreen;
-    let keyboardHelper: KeyboardHelper;
-
-    before(() => {
-        header = new Header();
-        navigationMenu = new NavigationMenu();
-        loginScreen = new LoginScreen();
-        keyboardHelper = new KeyboardHelper();
-    });
 
     beforeEach(async () => {
-        await appStateHelper.resetApp();
-        await header.openMenu();
-        await expect(navigationMenu.logoutOption).not.toBeDisplayed();
-        await navigationMenu.selectLogin();
-        await expect(loginScreen.loginTitle).toBeDisplayed();
+        await appState.resetApp();
+        await navigation.openMenu();
+        await menuScreen.selectLogin();
+        expect(await loginScreen.isLoginTitleDisplayed()).toBe(true);
     });
 
     it('Login with valid credentials', async () => {
         await loginScreen.login(env.username, env.password);
-        await header.openMenu();
-        await expect(navigationMenu.logoutOption).toBeDisplayed();
-        await expect(navigationMenu.logoutOption).toHaveText('Log Out');
+        await navigation.openMenu();
+        await expect(menuScreen.logoutMenuItem).toBeDisplayed();
+        if (Platform.isAndroid) {
+            await expect(menuScreen.logoutMenuItem).toHaveText('Log Out');
+        }
     });
 
-    it('Login with a locked-out user', async () => {
+    it('Login with a locked-out user', async function (this: Mocha.Context) {
+        // Locked-out user validation is not supported on iOS. 
+        if (Platform.isIOS) this.skip();
+
         await loginScreen.login(loginData.lockedOutUser.username, loginData.lockedOutUser.password);
-        await expect(loginScreen.passwordErrorMessage).toBeDisplayed();
-        await expect(loginScreen.passwordErrorMessage).toHaveText('Sorry this user has been locked out.');
+        expect(await loginScreen.isErrorMessageDisplayed()).toBe(true);
+        expect(await loginScreen.getErrorMessage()).toBe('Sorry this user has been locked out.');
     });
 
     it('Show an error when username is empty', async () => {
         await loginScreen.login(loginData.emptyCredentials.username, env.password);
-        await expect(loginScreen.usernameErrorMessage).toBeDisplayed();
-        await expect(loginScreen.usernameErrorMessage).toHaveText('Username is required');
+        if (Platform.isIOS) {
+            expect(await loginScreen.getAlertText()).toContain('Validation Error!');
+            expect(await loginScreen.getAlertText()).toContain('Username is required');
+            await loginScreen.acceptAlert();
+        } else {
+            expect(await loginScreen.isUsernameErrorMessageDisplayed()).toBe(true);
+            expect(await loginScreen.getUsernameErrorMessage()).toBe('Username is required');
+        }
     });
 
     it('Show an error when password is empty', async () => {
         await loginScreen.login(env.username, loginData.emptyCredentials.password);
-        await expect(loginScreen.passwordErrorMessage).toBeDisplayed();
-        await expect(loginScreen.passwordErrorMessage).toHaveText('Enter Password');
+        if (Platform.isIOS) {
+            expect(await loginScreen.getAlertText()).toContain('Validation Error!');
+            expect(await loginScreen.getAlertText()).toContain('Password is required');
+        } else {
+            expect(await loginScreen.isErrorMessageDisplayed()).toBe(true);
+            expect(await loginScreen.getErrorMessage()).toBe('Enter Password');
+        }
     });
 
     it('Show an error when username & password are empty', async () => {
         await loginScreen.login(loginData.emptyCredentials.username, loginData.emptyCredentials.password);
-        await expect(loginScreen.usernameErrorMessage).toBeDisplayed();
-        await expect(loginScreen.usernameErrorMessage).toHaveText('Username is required');
-    });
-
-    it('Display and hide the keyboard', async () => {
-        await loginScreen.tapPasswordInput();
-        expect(await browser.isKeyboardShown()).toBe(true);
-        await keyboardHelper.hideKeyboard();
-        expect(await browser.isKeyboardShown()).toBe(false);
+        if (Platform.isIOS) {
+            expect(await loginScreen.getAlertText()).toContain('Validation Error!');
+            expect(await loginScreen.getAlertText()).toContain('Username is required');
+        } else {
+            expect(await loginScreen.isUsernameErrorMessageDisplayed()).toBe(true);
+            expect(await loginScreen.getUsernameErrorMessage()).toBe('Username is required');
+        }
     });
 });

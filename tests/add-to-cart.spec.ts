@@ -1,5 +1,5 @@
 import { ProductDetailsScreen } from '@screens/product-details.screen'
-import { ProductsScreen } from '@screens/products.screen'
+import { ProductsScreen } from '@screens/catalog.screen'
 import { Header } from '@components/header.component';
 import productsData from '@test-data/products.data.json'
 import { expect } from '@wdio/globals';

@@ -1,4 +1,4 @@
-import { ProductsScreen } from '@screens/products.screen';
+import { ProductsScreen } from '@screens/catalog.screen';
 import { ProductDetailsScreen } from '@screens/product-details.screen';
 import { expect } from '@wdio/globals';
 import appStateHelper from '@helpers/app-state.helper';

@@ -1,5 +1,5 @@
 import { Header } from '@components/header.component';
-import { NavigationMenu } from '@components/navigation-menu.component';
+import { NavigationMenu } from '@components/navigation.component';
 import { ResetAppStateDialog } from '@components/reset-app-state.dialog.component';
 import { expect } from '@wdio/globals';
 

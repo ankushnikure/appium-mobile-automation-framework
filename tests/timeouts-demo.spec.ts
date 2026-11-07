@@ -1,5 +1,5 @@
 import { Header } from '@components/header.component'
-import { NavigationMenu } from '@components/navigation-menu.component';
+import { NavigationMenu } from '@components/navigation.component';
 import { LoginScreen } from '@screens/login.screen';
 import { browser, expect } from '@wdio/globals';
 import appStateHelper from '@helpers/app-state.helper';
