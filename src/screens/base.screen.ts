@@ -1,13 +1,10 @@
-import PlatformHelper from '@helpers/platform.helper';
+import { browser } from '@wdio/globals';
+import { Platform } from '@helpers/platform.helper';
 
 export class BaseScreen {
 
-    isAndroid(): boolean {
-        return PlatformHelper.isAndroid;
-    }
-
-    isIOS(): boolean {
-        return PlatformHelper.isIOS;
+    async goBack(): Promise<void> {
+        await browser.back();
     }
 
     async getAlertText(): Promise<string> {
@@ -19,7 +16,7 @@ export class BaseScreen {
     }
 
     async hideKeyboard(): Promise<void> {
-        if (this.isIOS()) {
+        if (Platform.isIOS) {
             await browser.keys('Enter');
         } else {
             await browser.hideKeyboard();

@@ -2,7 +2,7 @@ import { expect } from '@wdio/globals';
 import navigation from '@components/navigation.component';
 import cartScreen from '@screens/cart.screen';
 import catalogScreen from '@screens/catalog.screen'
-import productDetailsScreen from '@screens/product-details.screen'
+import productDetailScreen from '@screens/product-detail.screen'
 
 
 describe('Shopping Cart Feature', () => {
@@ -21,8 +21,8 @@ describe('Shopping Cart Feature', () => {
 
     describe('Cart with items', () => {
         beforeEach(async () => {
-            await catalogScreen.openProduct();
-            await productDetailsScreen.addProductToCart();
+            await catalogScreen.tapProduct();
+            await productDetailScreen.addToCart();
             await navigation.openCart();
         });
 

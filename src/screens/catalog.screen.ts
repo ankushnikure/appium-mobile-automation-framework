@@ -1,58 +1,57 @@
-import { $ } from '@wdio/globals';
+import { $$ } from '@wdio/globals';
 import { BaseScreen } from './base.screen';
-// import { GestureHelper } from '@helpers/gesture.helper';
 import Platform from '@helpers/platform.helper';
 
 export class CatalogScreen extends BaseScreen {
 
-    // private readonly gestures = new GestureHelper();
-
     // ==================== LOCATORS ====================
 
-    public get cartBadge() {
-        return $('id=com.saucelabs.mydemoapp.android:id/cartTV');
-    }
-
-    public get screenTitle() {
-        return $('~title');
-    }
-
-    // private get productScrollContainer() {
-    //     return $('id=com.saucelabs.mydemoapp.android:id/scrollView');
-    // }
-
-    public get productItems() {
+    private get productItems() {
         return Platform.isIOS
             ? $$('-ios class chain:**/XCUIElementTypeCell')
-            : $$('id=com.saucelabs.mydemoapp.android:id/productIV');
+            : $$('//androidx.recyclerview.widget.RecyclerView[@resource-id="com.saucelabs.mydemoapp.android:id/productRV"]/android.view.ViewGroup');
     }
 
-    public productTitle(productName: string) {
-        return $(
-            'android=new UiSelector()' +
-            '.resourceId("com.saucelabs.mydemoapp.android:id/titleTV")' +
-            `.text(${JSON.stringify(productName)})`
-        );
+    private get productTitles() {
+        return Platform.isIOS
+            ? $$('~Product Name')
+            : $$('id=com.saucelabs.mydemoapp.android:id/titleTV');
     }
 
-    public productImage(productName: string) {
-        return $(
-            '//android.widget.TextView' +
-            '[@resource-id="com.saucelabs.mydemoapp.android:id/titleTV"]' +
-            `[@text="${productName}"]` +
-            '/../android.widget.ImageView' +
-            '[@resource-id="com.saucelabs.mydemoapp.android:id/productIV"]'
-        );
+    private get productPrices() {
+        return Platform.isIOS
+            ? $$('~Product Price')
+            : $$('id=com.saucelabs.mydemoapp.android:id/priceTV');
     }
 
     // ==================== ACTIONS ====================
 
-    // async openProduct(productName: string): Promise<void> {
-    //     await this.productImage(productName).click();
-    // }
+    async getProductCount(): Promise<number> {
+        return this.productItems.length;
+    }
 
-    async openProduct(index = 0): Promise<void> {
-        await this.productItems[index].click();
+    async getProductTitle(index = 0): Promise<string> {
+        return this.productTitles[index].getText();
+    }
+
+    async getAllProductTitles(): Promise<string[]> {
+        const titles = await this.productTitles;
+        return titles.map((title) => title.getText());
+    }
+
+    async getProductPrice(index = 0): Promise<string> {
+        return this.productPrices[index].getText();
+    }
+
+    async getAllProductPrices(): Promise<string[]> {
+        const prices = await this.productPrices;
+        return prices.map((price) => price.getText());
+    }
+
+    async tapProduct(index = 0): Promise<void> {
+        const products = await this.productItems;
+        await products[index].waitForDisplayed();
+        await products[index].click();
     }
 }
 
