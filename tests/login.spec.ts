@@ -7,12 +7,12 @@ import loginScreen from '@screens/login.screen';
 import loginData from '@test-data/login.data.json'
 import appState from '@helpers/app-state.helper';
 
-describe('Login Tests', () => {
+describe('Login Feature', () => {
     beforeEach(async () => {
         await appState.resetApp();
         await navigation.openMenu();
-        await menuScreen.selectLogin();
-        expect(await loginScreen.isLoginTitleDisplayed()).toBe(true);
+        await menuScreen.tapLogin();
+        expect(await loginScreen.loginTitle).toBeDisplayed();
     });
 
     it('Login with valid credentials', async () => {
