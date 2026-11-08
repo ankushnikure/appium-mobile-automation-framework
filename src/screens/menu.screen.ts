@@ -1,8 +1,11 @@
 import { $ } from '@wdio/globals';
 import { BaseScreen } from './base.screen';
+import Platform from '@helpers/platform.helper';
 
 export class MenuScreen extends BaseScreen {
-    // Locators
+   
+    // ==================== LOCATORS ====================
+
     public get webviewMenuItem() {
         return $('android=new UiSelector().text("WebView")');
     }
@@ -16,35 +19,36 @@ export class MenuScreen extends BaseScreen {
     }
 
     public get loginMenuItem() {
-        return this.isIOS()
+        return Platform.isIOS
             ? $('~LogOut-menu-item')
             : $('~Login Menu Item');
     }
 
     public get logoutMenuItem() {
-        return this.isIOS()
+        return Platform.isIOS
             ? $('~LogOut-menu-item')
             : $('~Logout Menu Item');
     }
 
-    // Actions
-    async selectWebView(): Promise<void> {
+   // ==================== ACTIONS ====================
+
+    async tapWebView(): Promise<void> {
         await this.webviewMenuItem.click();
     }
 
-    async selectQrCodeScanner() {
+    async tapQrCodeScanner() {
         await this.qrCodeScannerMenuItem.click();
     }
 
-    async selectResetAppState(): Promise<void> {
+    async tapResetAppState(): Promise<void> {
         await this.resetAppStateMenuItem.click();
     }
 
-    async selectLogin(): Promise<void> {
+    async tapLogin(): Promise<void> {
         await this.loginMenuItem.click();
     }
 
-    async selectLogout(): Promise<void> {
+    async tapLogout(): Promise<void> {
         await this.logoutMenuItem.click();
     }
 }

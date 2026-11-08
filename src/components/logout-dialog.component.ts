@@ -1,21 +1,26 @@
 import { $ } from '@wdio/globals';
 
 export class LogoutDialog {
-    //Locators
+
+    // ==================== LOCATORS ====================
+
     private get confirmLogoutButton() {
         return $('android=new UiSelector().text("LOGOUT")');
     }
 
-     private get cancelLogoutButton() {
+    private get cancelLogoutButton() {
         return $('android=new UiSelector().text("CANCEL")');
     }
 
-    // Actions
+    // ==================== ACTIONS ====================
+
     async confirmLogout(): Promise<void> {
         await this.confirmLogoutButton.click();
     }
 
-     async cancelLogout(): Promise<void> {
+    async cancelLogout(): Promise<void> {
         await this.cancelLogoutButton.click();
     }
 }
+
+export default new LogoutDialog();

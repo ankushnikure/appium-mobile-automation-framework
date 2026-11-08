@@ -1,47 +1,44 @@
-import { Header } from '@components/header.component';
-import { NavigationMenu } from '@components/navigation.component';
-import { LoginScreen } from '@screens/login.screen';
 import { expect } from '@wdio/globals';
 import { env } from '@utils/env'
-import { LogoutDialog } from '@components/logout-dialog.component';
-import appStateHelper from '@helpers/app-state.helper';
+import appState from '@helpers/app-state.helper';
+import navigation from '@components/navigation.component';
+import menuScreen from '@screens/menu.screen';
+import loginScreen from '@screens/login.screen';
+import logoutDialog from '@components/logout-dialog.component';
+import Platform from '@helpers/platform.helper';
 
-describe('Logout Tests', () => {
-    let header: Header;
-    let navigationMenu: NavigationMenu;
-    let loginScreen: LoginScreen;
-    let logoutDialog: LogoutDialog;
-
-    before(async () => {
-        header = new Header();
-        navigationMenu = new NavigationMenu();
-        loginScreen = new LoginScreen();
-        logoutDialog = new LogoutDialog();
-    });
-
+describe('Logout Feature', () => {
     beforeEach(async () => {
-        await appStateHelper.resetApp();
-        await header.openMenu();
-        await navigationMenu.selectLogin();
+        await appState.resetApp();
+        await navigation.openMenu();
+        await menuScreen.tapLogin();
         await loginScreen.login(env.username, env.password);
     });
 
     it('Logout when confirmation is accepted', async () => {
-        await header.openMenu();
-        await navigationMenu.selectLogout();
-        await logoutDialog.confirmLogout();
-        await header.openMenu();
-        await expect(navigationMenu.loginOption).toBeDisplayed();
-        await expect(navigationMenu.loginOption).toHaveText('Log In');
-        await expect(navigationMenu.logoutOption).not.toBeDisplayed();
+        await navigation.openMenu();
+        await menuScreen.tapLogout();
+        if (Platform.isIOS) {
+            // Logout dialog is not available on iOS. 
+            expect(await loginScreen.loginTitle).toBeDisplayed();
+        } else {
+            await logoutDialog.confirmLogout();
+            await navigation.openMenu();
+            await expect(menuScreen.loginMenuItem).toBeDisplayed();
+            await expect(menuScreen.loginMenuItem).toHaveText('Log In');
+            await expect(menuScreen.logoutMenuItem).not.toBeDisplayed();
+        }
     });
 
-    it('Remain logged in when logout is cancelled', async () => {
-        await header.openMenu();
-        await navigationMenu.selectLogout();
+    it('Remain logged in when logout is cancelled', async function (this: Mocha.Context) {
+        // Logout dialog is not available on iOS. 
+        if (Platform.isIOS) this.skip();
+
+        await navigation.openMenu();
+        await menuScreen.tapLogout();
         await logoutDialog.cancelLogout();
-        await header.openMenu();
-        await expect(navigationMenu.logoutOption).toBeDisplayed();
-        await expect(navigationMenu.logoutOption).toHaveText('Log Out');
+        await navigation.openMenu();
+        await expect(menuScreen.logoutMenuItem).toBeDisplayed();
+        await expect(menuScreen.logoutMenuItem).toHaveText('Log Out');
     });
 });

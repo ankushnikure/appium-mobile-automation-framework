@@ -6,7 +6,7 @@ export class LoginScreen extends BaseScreen {
 
     // ==================== LOCATORS ====================
 
-    private get loginTitle() {
+    public get loginTitle() {
         return Platform.isIOS
             ? $('-ios class chain:**/XCUIElementTypeStaticText[`name == "Login"`][1]')
             : $('id=com.saucelabs.mydemoapp.android:id/loginTV');
@@ -39,10 +39,6 @@ export class LoginScreen extends BaseScreen {
     }
 
     // ==================== ACTIONS ====================
-
-    async isLoginTitleDisplayed(): Promise<boolean> {
-        return await this.loginTitle.isDisplayed();
-    }
 
     async login(username: string, password: string): Promise<void> {
         await this.usernameInput.setValue(username);
