@@ -5,36 +5,37 @@ import catalogScreen from '@screens/catalog.screen'
 import productDetailScreen from '@screens/product-detail.screen'
 
 
-describe('Shopping Cart Feature', () => {
+describe('Cart', () => {
 
     describe('Empty Cart', () => {
-        it('Show empty cart when no items added', async () => {
+        it('should display empty cart when no items are added', async () => {
             await navigation.openCart();
             expect(await cartScreen.isCartEmpty()).toBe(true);
         });
 
-        it('Show continue shopping button on empty cart', async () => {
+        it('should display continue shopping button', async () => {
             await navigation.openCart();
             expect(await cartScreen.isContinueShoppingButtonDisplayed()).toBe(true);
         });
     });
 
-    describe('Cart with items', () => {
+    describe('Cart Operations', () => {
         beforeEach(async () => {
             await catalogScreen.tapProduct();
-            await productDetailScreen.addToCart();
+            await productDetailScreen.addProductToCart();
             await navigation.openCart();
         });
 
-        it('Show added item in cart', async () => {
-            expect(await cartScreen.getCartItemCount()).toBeGreaterThan(0);
+        it('should display added item', async () => {
+            const itemCount = await cartScreen.getCartItemCount();
+            expect(itemCount).toBeGreaterThan(0);
         });
 
-        it('Remove item from cart', async () => {
-            const intialCount = await cartScreen.getCartItemCount();
+        it('should remove item from cart', async () => {
+            const initialCount = await cartScreen.getCartItemCount();
             await cartScreen.removeItem();
             const finalCount = await cartScreen.getCartItemCount();
-            expect(finalCount).toBeLessThan(intialCount);
+            expect(finalCount).toBeLessThan(initialCount);
         });
     });
 });
