@@ -1,6 +1,7 @@
 import { $$ } from '@wdio/globals';
 import { BaseScreen } from './base.screen';
 import Platform from '@helpers/platform.helper';
+import gestures from '@helpers/gesture.helper';
 
 export class CatalogScreen extends BaseScreen {
 
@@ -10,6 +11,12 @@ export class CatalogScreen extends BaseScreen {
         return Platform.isIOS
             ? $$('-ios class chain:**/XCUIElementTypeCell')
             : $$('//androidx.recyclerview.widget.RecyclerView[@resource-id="com.saucelabs.mydemoapp.android:id/productRV"]/android.view.ViewGroup');
+    }
+
+    public productTitle(productName: string) {
+        return Platform.isIOS
+            ? $(`-ios predicate string:label == "${productName}"`)
+            : $(`android=new UiSelector().text("${productName}")`);
     }
 
     private get productTitles() {
@@ -52,6 +59,12 @@ export class CatalogScreen extends BaseScreen {
         const products = await this.productItems;
         await products[index].waitForDisplayed();
         await products[index].click();
+    }
+
+    async scrollToProduct(productName: string): Promise<void> {
+        await gestures.scrollToElement(
+            await this.productTitle(productName)
+        );
     }
 }
 

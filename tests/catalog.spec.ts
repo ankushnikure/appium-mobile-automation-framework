@@ -1,6 +1,7 @@
 import { expect } from '@wdio/globals';
 import catalogScreen from '@screens/catalog.screen';
 import productDetailScreen from '@screens/product-detail.screen';
+import gestures from '@helpers/gesture.helper';
 
 describe('Catalog', () => {
 
@@ -24,6 +25,20 @@ describe('Catalog', () => {
             await catalogScreen.tapProduct(index);
             const titleOnPDP = await productDetailScreen.getProductTitle();
             expect(titleOnPDP).toEqual(titleOnCatalog);
+        });
+    });
+
+    describe('Gesture Navigation', () => {
+        it('should scroll and swipe on the catalog page', async () => {
+            await gestures.scrollDown();
+            await gestures.scrollUp();
+            await gestures.swipeScreen('up');
+        });
+
+        it('should scroll to the specified product', async () => {
+            const productName = 'Sauce Labs Onesie';
+            await catalogScreen.scrollToProduct(productName);
+            await expect(catalogScreen.productTitle(productName)).toBeDisplayed();
         });
     });
 });
