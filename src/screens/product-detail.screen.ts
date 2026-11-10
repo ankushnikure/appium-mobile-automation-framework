@@ -29,11 +29,26 @@ export class ProductDetailScreen extends BaseScreen {
             : $('~Tap to add product to cart');
     }
 
+    private get addPlusIcon() {
+        return Platform.isIOS
+            ? $('~AddPlus Icons')
+            : $('~Increase item quantity')
+    }
+
     // ==================== ACTIONS ====================
 
     async tapBackButton(): Promise<void> {
         await this.backButtonIcon?.click();
     }
+
+    async navigateBackToCatalog(): Promise<void> {
+        if (Platform.isIOS) {
+            await this.tapBackButton();
+        } else {
+            await this.goBack();
+        }
+    }
+    
     async getProductTitle(): Promise<string> {
         return this.productTitle.getText();
     }
@@ -42,7 +57,13 @@ export class ProductDetailScreen extends BaseScreen {
         return this.productPrice.getText();
     }
 
-    async addToCart(): Promise<void> {
+    async increaseItemQuantity(n: number): Promise<void> {
+        for (let i = 0; i < n; i++) {
+            await this.addPlusIcon.click();
+        }
+    }
+
+    async addProductToCart(): Promise<void> {
         await this.addToCartButton.click();
     }
 }

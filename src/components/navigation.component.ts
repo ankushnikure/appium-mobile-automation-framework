@@ -19,7 +19,9 @@ export class NavigationComponent extends BaseScreen {
     }
 
     private get cartBadge() {
-        return $('id=com.saucelabs.mydemoapp.android:id/cartTV');
+        return Platform.isIOS
+            ? $('//XCUIElementTypeButton[@name="Cart-tab-item"]/..//XCUIElementTypeStaticText[number(@name) > 0]')
+            : $('id=com.saucelabs.mydemoapp.android:id/cartTV');
     }
 
     // ==================== ACTIONS ====================
