@@ -4,6 +4,10 @@ import Platform from '@helpers/platform.helper';
 
 export class CartScreen extends BaseScreen {
 
+    constructor() {
+        super('CartScreen');
+    }
+
     // ==================== LOCATORS ====================
 
     private get noItemsText() {
@@ -45,6 +49,7 @@ export class CartScreen extends BaseScreen {
     }
 
     async removeItem(index = 0): Promise<void> {
+        this.log.step(`Removing cart item at index ${index}`);
         await this.removeItemButton[index].click();
     }
 }

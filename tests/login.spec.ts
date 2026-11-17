@@ -6,6 +6,9 @@ import menuScreen from '@screens/menu.screen';
 import loginScreen from '@screens/login.screen';
 import loginData from '@test-data/login.data.json'
 import appState from '@helpers/app-state.helper';
+import { Logger } from '@utils/logger';
+
+const log = new Logger('Login Test');
 
 describe('Login', () => {
     beforeEach(async () => {
@@ -16,7 +19,7 @@ describe('Login', () => {
     });
 
     describe('Successful Login', () => {
-        it('should log in with valid credentials', async () => {
+        it.only('should log in with valid credentials', async () => {
             await loginScreen.login(env.username, env.password);
             await navigation.openMenu();
             await expect(menuScreen.logoutMenuItem).toBeDisplayed();
@@ -27,9 +30,12 @@ describe('Login', () => {
     });
 
     describe('Login Errors', () => {
-        it('should display error for locked-out user', async function () {
+        it.only('should display error for locked-out user', async function () {
             // Locked-out user validation is not supported on iOS. 
-            if (Platform.isIOS) this.skip();
+            if (Platform.isIOS) {
+                log.info('Skipping locked-out user validation on iOS.');
+                this.skip();
+            }
 
             await loginScreen.login(loginData.lockedOutUser.username, loginData.lockedOutUser.password);
             expect(await loginScreen.isErrorMessageDisplayed()).toBe(true);

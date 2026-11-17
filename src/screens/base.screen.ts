@@ -1,7 +1,13 @@
 import { browser } from '@wdio/globals';
 import { Platform } from '@helpers/platform.helper';
+import { Logger } from '@utils/logger';
 
 export class BaseScreen {
+    protected log: Logger;
+
+    constructor(screenName: string) {
+        this.log = new Logger(screenName);
+    }
 
     async goBack(): Promise<void> {
         await browser.back();

@@ -5,6 +5,10 @@ import gestures from '@helpers/gesture.helper';
 
 export class CatalogScreen extends BaseScreen {
 
+    constructor() {
+        super('CatalogScreen');
+    }
+
     // ==================== LOCATORS ====================
 
     private get productItems() {
@@ -56,12 +60,14 @@ export class CatalogScreen extends BaseScreen {
     }
 
     async tapProduct(index = 0): Promise<void> {
+        this.log.step(`Tapping product at index ${index}`);
         const products = await this.productItems;
         await products[index].waitForDisplayed();
         await products[index].click();
     }
 
     async scrollToProduct(productName: string): Promise<void> {
+        this.log.step(`Scrolling to product: ${productName}`);
         await gestures.scrollToElement(
             await this.productTitle(productName)
         );

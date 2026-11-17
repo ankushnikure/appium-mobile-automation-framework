@@ -1,11 +1,14 @@
 import { expect } from '@wdio/globals';
 import { env } from '@utils/env'
+import Platform from '@helpers/platform.helper';
 import appState from '@helpers/app-state.helper';
 import navigation from '@components/navigation.component';
 import menuScreen from '@screens/menu.screen';
 import loginScreen from '@screens/login.screen';
 import logoutDialog from '@components/logout-dialog.component';
-import Platform from '@helpers/platform.helper';
+import { Logger } from '@utils/logger';
+
+const log = new Logger('Logout Test');
 
 describe('Logout', () => {
     beforeEach(async () => {
@@ -33,7 +36,10 @@ describe('Logout', () => {
 
     it('should remain logged in when logout is cancelled', async function () {
         // Logout dialog is not available on iOS. 
-        if (Platform.isIOS) this.skip();
+        if (Platform.isIOS) {
+            log.info('Skipping test on iOS.');
+            this.skip();
+        }
 
         await menuScreen.tapLogout();
         await logoutDialog.cancelLogout();

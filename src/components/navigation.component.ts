@@ -2,7 +2,11 @@ import { $ } from '@wdio/globals';
 import { BaseScreen } from '@screens/base.screen';
 import Platform from '@helpers/platform.helper';
 
-export class NavigationComponent extends BaseScreen {
+export class Navigation extends BaseScreen {
+
+    constructor() {
+        super('Navigation');
+    }
 
     // ==================== LOCATORS ====================
 
@@ -31,6 +35,7 @@ export class NavigationComponent extends BaseScreen {
     }
 
     async openCart(): Promise<void> {
+        this.log.step('Navigating to cart');
         await this.cartIcon.click();
     }
 
@@ -39,4 +44,4 @@ export class NavigationComponent extends BaseScreen {
     }
 }
 
-export default new NavigationComponent();
+export default new Navigation();

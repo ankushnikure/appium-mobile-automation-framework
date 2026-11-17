@@ -4,6 +4,10 @@ import Platform from '@helpers/platform.helper';
 
 export class ProductDetailScreen extends BaseScreen {
 
+    constructor() {
+        super('ProductDetailScreen');
+    }
+
     // ==================== LOCATORS ====================
 
     private get backButtonIcon() {
@@ -38,6 +42,7 @@ export class ProductDetailScreen extends BaseScreen {
     // ==================== ACTIONS ====================
 
     async tapBackButton(): Promise<void> {
+        this.log.step('Navigating back from product detail');
         await this.backButtonIcon?.click();
     }
 
@@ -48,7 +53,7 @@ export class ProductDetailScreen extends BaseScreen {
             await this.goBack();
         }
     }
-    
+
     async getProductTitle(): Promise<string> {
         return this.productTitle.getText();
     }
@@ -57,13 +62,15 @@ export class ProductDetailScreen extends BaseScreen {
         return this.productPrice.getText();
     }
 
-    async increaseItemQuantity(n: number): Promise<void> {
-        for (let i = 0; i < n; i++) {
+    async increaseItemQuantity(times = 1): Promise<void> {
+        for (let i = 0; i < times; i++) {
+            this.log.step(`Incrementing quantity (${i + 1}/${times})`);
             await this.addPlusIcon.click();
         }
     }
 
     async addProductToCart(): Promise<void> {
+        this.log.step('Adding product to cart from detail page');
         await this.addToCartButton.click();
     }
 }

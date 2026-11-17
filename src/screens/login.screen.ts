@@ -4,6 +4,10 @@ import Platform from '@helpers/platform.helper';
 
 export class LoginScreen extends BaseScreen {
 
+    constructor() {
+        super('LoginScreen');
+    }
+
     // ==================== LOCATORS ====================
 
     public get loginTitle() {
@@ -40,11 +44,27 @@ export class LoginScreen extends BaseScreen {
 
     // ==================== ACTIONS ====================
 
-    async login(username: string, password: string): Promise<void> {
+    async enterUsername(username: string) {
+        this.log.step(`Entering username: ${username}`);
         await this.usernameInput.setValue(username);
+    }
+
+    async enterPassword(password: string) {
+        this.log.step('Entering password');
         await this.passwordInput.setValue(password);
-        await this.hideKeyboard();
+    }
+
+    async tapLoginButton() {
+        this.log.step('Tapping login button');
         await this.loginButton.click();
+    }
+
+    async login(username: string, password: string): Promise<void> {
+        this.log.step(`Logging in with user: ${username}`);
+        await this.enterUsername(username);
+        await this.enterPassword(password);
+        await this.hideKeyboard();
+        await this.tapLoginButton();
     }
 
     async isErrorMessageDisplayed(): Promise<boolean> {

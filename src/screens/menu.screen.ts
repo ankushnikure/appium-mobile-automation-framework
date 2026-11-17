@@ -3,7 +3,11 @@ import { BaseScreen } from './base.screen';
 import Platform from '@helpers/platform.helper';
 
 export class MenuScreen extends BaseScreen {
-   
+
+    constructor() {
+        super('MenuScreen');
+    }
+
     // ==================== LOCATORS ====================
 
     public get webviewMenuItem() {
@@ -30,25 +34,30 @@ export class MenuScreen extends BaseScreen {
             : $('~Logout Menu Item');
     }
 
-   // ==================== ACTIONS ====================
+    // ==================== ACTIONS ====================
 
     async tapWebView(): Promise<void> {
+        this.log.step('Navigating to Webview');
         await this.webviewMenuItem.click();
     }
 
     async tapQrCodeScanner() {
+        this.log.step('Navigating to QrCodeScanner');
         await this.qrCodeScannerMenuItem.click();
     }
 
     async tapResetAppState(): Promise<void> {
+        this.log.step('Navigating to ResetAppState');
         await this.resetAppStateMenuItem.click();
     }
 
     async tapLogin(): Promise<void> {
+        this.log.step('Navigating to Login');
         await this.loginMenuItem.click();
     }
 
     async tapLogout(): Promise<void> {
+        this.log.step('Logging out');
         await this.logoutMenuItem.click();
     }
 }
